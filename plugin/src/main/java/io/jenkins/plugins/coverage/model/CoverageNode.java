@@ -130,8 +130,9 @@ public class CoverageNode implements Serializable {
 
         if (hasParent()) {
             String parentPath = getParent().getPath();
-
-            if (StringUtils.isBlank(parentPath)) {
+            if (StringUtils.isBlank(parentPath) || parentPath.equals("/") || localPath.startsWith(parentPath + "/")) {
+                // do not prepend parent path if empty or if root or if local path starts with it
+                // as it is the case for coverage node created from cobertura report
                 return localPath;
             }
             if (StringUtils.isBlank(localPath)) {
